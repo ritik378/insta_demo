@@ -9,12 +9,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.actions,
     this.color = AppColors.white,
+    this.bottom,
+    this.shape
   });
   final Widget? title;
   final Widget? leading;
   final bool centerTitle;
   final List<Widget>? actions;
   final Color color;
+  final PreferredSizeWidget? bottom;
+  final ShapeBorder? shape;
   @override
 
   @override
@@ -26,13 +30,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: color,
       centerTitle: centerTitle,
       leading: leading,
+      bottom: bottom,
       actions: actions,
-      shape: const Border(
-        bottom: BorderSide(
-          color: AppColors.customGray,
-          width: 1,
-        ),
-      ),
+      shape:shape,
     );
   }
 

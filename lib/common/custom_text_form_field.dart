@@ -27,12 +27,12 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       cursorColor: Colors.black,
+      cursorErrorColor: Colors.red,
       validator: validator,
       decoration: InputDecoration(
         fillColor: color,
         filled: true,
         hintText: hintText,
-        //hintText,
         hintStyle: hintStyle,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
@@ -57,8 +57,8 @@ class CustomTextFormField extends StatelessWidget {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: const BorderSide(
-            color: Colors.red,
+          borderSide: BorderSide(
+            color: borderColor,
             width: 0.5,
           ),
         ),

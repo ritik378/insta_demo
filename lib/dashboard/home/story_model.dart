@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class StoryModel {
   StoryModel({
@@ -16,14 +17,14 @@ class StoryModel {
 
 class StoryCardModel {
   StoryCardModel({
-    this.visited = false,
+
     this.duration = const Duration(seconds: 2),
     this.color = const Color(0xff333333),
     this.childOverlay,
     this.child,
-  });
+  }) : visited = false.obs;
 
-  bool visited;
+  RxBool visited;
   Duration duration;
   Color color;
   Widget? childOverlay;

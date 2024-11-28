@@ -7,4 +7,6 @@ class LanguageString{
   static const String or = 'or';
   static const String dontHaveAnAccount = 'dontHaveAnAccount';
   static const String signUp = 'signUp';
+  static const String following = 'followings';
+  static const String you = 'you';
 }

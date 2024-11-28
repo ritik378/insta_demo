@@ -24,9 +24,7 @@ class HomeView extends StatelessWidget {
       body: Column(
         children: [
           _buildStories(),
-          Expanded(
-            child: _buildPostList(),
-          ),
+          Expanded(child: _buildPostList()),
         ],
       ),
     );
@@ -56,147 +54,53 @@ class HomeView extends StatelessWidget {
       children: [
         Obx(() {
           return Story.builder(
-              controller: homeController.storyController.value,
-              itemCount: homeController.stories.length,
-              itemBuilder: (context, index) {
-                StoryModel s = homeController.stories[index];
-                return StoryUser(
-                  avatar: s.avatar,
-                  label: s.label,
-                  children: s.cards == null
-                      ? []
-                      : s.cards!
-                      .map((card) =>
-                      StoryCard(
+            controller: homeController.storyController.value,
+            itemCount: homeController.stories.length,
+            itemBuilder: (context, index) {
+              StoryModel s = homeController.stories[index];
+              return StoryUser(
+                avatar: s.avatar,
+                label: s.label,
+                children: s.cards?.map((card) {
+                      return StoryCard(
+                        visited: card.visited.value,
                         onVisited: (cardIndex) {
-                          card.visited = true;
+                          card.visited.value = true;
+                          print("Story card $cardIndex visited ${ card.visited.value}");
+                         homeController.stories.refresh();
                         },
                         footer: StoryCardFooter(
                           messageBox: StoryCardMessageBox(
                             child: Center(
                               child: SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width /
-                                    1.5,
-                                height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width /
-                                    1.5,
+                                width: MediaQuery.of(context).size.width / 1.5,
+                                height: MediaQuery.of(context).size.width / 1.5,
                                 child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceAround,
-                                      children: [
-                                        MaterialButton(
-                                          minWidth: 0,
-                                          padding: EdgeInsets.zero,
-                                          shape:
-                                          const CircleBorder(),
-                                          child: const Text(
-                                            "😂",
-                                            style: TextStyle(
-                                                fontSize: 32),
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        MaterialButton(
-                                          minWidth: 0,
-                                          padding: EdgeInsets.zero,
-                                          shape:
-                                          const CircleBorder(),
-                                          child: const Text(
-                                            "😮",
-                                            style: TextStyle(
-                                                fontSize: 32),
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        MaterialButton(
-                                          minWidth: 0,
-                                          padding: EdgeInsets.zero,
-                                          shape:
-                                          const CircleBorder(),
-                                          child: const Text(
-                                            "😍",
-                                            style: TextStyle(
-                                                fontSize: 32),
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    ),
+                                    _buildReactionRow(["😂", "😮", "😍"]),
                                     const SizedBox(height: 30),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceAround,
-                                      children: [
-                                        MaterialButton(
-                                          minWidth: 0,
-                                          padding: EdgeInsets.zero,
-                                          shape:
-                                          const CircleBorder(),
-                                          child: const Text(
-                                            "😢",
-                                            style: TextStyle(
-                                                fontSize: 32),
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        MaterialButton(
-                                          minWidth: 0,
-                                          padding: EdgeInsets.zero,
-                                          shape:
-                                          const CircleBorder(),
-                                          child: const Text(
-                                            "👏",
-                                            style: TextStyle(
-                                                fontSize: 32),
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        MaterialButton(
-                                          minWidth: 0,
-                                          padding: EdgeInsets.zero,
-                                          shape:
-                                          const CircleBorder(),
-                                          child: const Text(
-                                            "🔥",
-                                            style: TextStyle(
-                                                fontSize: 32),
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    ),
+                                    _buildReactionRow(["😢", "👏", "🔥"]),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                          likeButton: StoryCardLikeButton(
-                            onLike: (cardLike) {},
-                          ),
-                          forwardButton: StoryCardForwardButton(
-                            onForward: (cardIndex) {},
-                          ),
+                          likeButton:
+                              StoryCardLikeButton(onLike: (cardLike) {}),
+                          forwardButton:
+                              StoryCardForwardButton(onForward: (cardIndex) {}),
                         ),
-                        color: card.visited ? Colors.grey : card.color,
-                        visited: card.visited ?? false,
+
                         cardDuration: card.duration,
                         childOverlay: card.childOverlay,
                         child: card.child,
-                      ))
-                      .toList(),
-                );
-              });
+                      );
+                    }).toList() ??
+                    [],
+              );
+            },
+          );
         }),
         const Divider(
           height: 4,
@@ -207,97 +111,38 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  Widget _buildReactionRow(List<String> emojis) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: emojis.map((emoji) {
+        return MaterialButton(
+          minWidth: 0,
+          padding: EdgeInsets.zero,
+          shape: const CircleBorder(),
+          child: Text(emoji, style: const TextStyle(fontSize: 32)),
+          onPressed: () {},
+        );
+      }).toList(),
+    );
+  }
+
   Widget _buildPostList() {
     return ListView.builder(
-      itemCount: 20,
+      itemCount: 5,
       itemBuilder: (context, index) => _buildPost(),
     );
   }
 
   Widget _buildPost() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildPostHeader(),
-          _buildPostCarousel(),
-          _buildPostActions(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: Row(
-              children: [
-                CommonUi.setPngImage("profile_image", height: 18, width: 18),
-                const SizedBox(width: 6),
-                RichText(
-                  text: const TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Liked by ",
-                        style: TextStyle(
-                          color: AppColors.darkCharcoal,
-                          fontFamily: AppFonts.regular,
-                          fontSize: 13,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "craig_love, ",
-                        style: TextStyle(
-                          color: AppColors.darkCharcoal,
-                          fontFamily: AppFonts.semiBold,
-                          fontSize: 13,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "and ",
-                        style: TextStyle(
-                          color: AppColors.darkCharcoal,
-                          fontFamily: AppFonts.regular,
-                          fontSize: 13,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "44,484 others",
-                        style: TextStyle(
-                          color: AppColors.darkCharcoal,
-                          fontFamily: AppFonts.semiBold,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-            child: RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: "joshua_i ",
-                    style: TextStyle(
-                      color: AppColors.darkCharcoal,
-                      fontFamily: AppFonts.semiBold,
-                      fontSize: 13,
-                    ),
-                  ),
-                  TextSpan(
-                    text:
-                    "The game in Japan was amazing and I want to share some photos",
-                    style: TextStyle(
-                      color: AppColors.darkCharcoal,
-                      fontFamily: AppFonts.regular,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildPostHeader(),
+        _buildPostCarousel(),
+        _buildPostActions(),
+        _buildPostLikes(),
+        _buildPostDescription(),
+      ],
     );
   }
 
@@ -314,20 +159,18 @@ class HomeView extends StatelessWidget {
               Row(
                 children: [
                   CommonUi.commonText(
-                    text: "joshua_i",
-                    size: 13,
-                    fontFamily: AppFonts.semiBold,
-                  ),
+                      text: "joshua_i",
+                      size: 13,
+                      fontFamily: AppFonts.semiBold),
                   const SizedBox(width: 4),
                   CommonUi.setSvgImage('blue_tick'),
                 ],
               ),
               CommonUi.commonText(
-                text: "Tokyo, Japan",
-                color: AppColors.darkCharcoal,
-                size: 11.0,
-                fontFamily: AppFonts.regular,
-              ),
+                  text: "Tokyo, Japan",
+                  color: AppColors.darkCharcoal,
+                  size: 11.0,
+                  fontFamily: AppFonts.regular),
             ],
           ),
           const Spacer(),
@@ -350,7 +193,6 @@ class HomeView extends StatelessWidget {
             initialPage: homeController.postIndex.value,
             onPageChanged: (index, reason) {
               homeController.onChangePostIndex(index);
-              // Pause all videos except the one currently active
               for (var i = 0; i < homeController.mediaController.length; i++) {
                 if (i != index &&
                     homeController.mediaController[i].value.isPlaying) {
@@ -365,58 +207,25 @@ class HomeView extends StatelessWidget {
             final contentUrl = homeController.postUrls[index];
 
             if (contentUrl.endsWith('.mp4')) {
-              return Stack(
-                children: [
-                  // Video Player
-                  Center(
-                    child: FutureBuilder<void>(
-                      future: controller.initialize(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return AspectRatio(
-                            aspectRatio: controller.value.aspectRatio,
-                            child: VideoPlayer(controller),
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                            child: Text('Error loading video'),
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-
-                  // Play/Pause button
-                  // Positioned(
-                  //   bottom: 20,
-                  //   right: 20,
-                  //   child: IconButton(
-                  //     icon: Icon(
-                  //       controller.value.isPlaying
-                  //           ? Icons.pause
-                  //           : Icons.play_arrow,
-                  //       color: Colors.white,
-                  //       size: 30,
-                  //     ),
-                  //     onPressed: () {
-                  //       if (controller.value.isPlaying) {
-                  //         controller.pause();
-                  //       } else {
-                  //         controller.play();
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
-                ],
+              return Center(
+                child: FutureBuilder<void>(
+                  future: controller.initialize(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return AspectRatio(
+                        aspectRatio: controller.value.aspectRatio,
+                        child: VideoPlayer(controller),
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Error loading video'));
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
               );
             } else {
-              // For images, simply show the image
               return Container(
-                height: 500,
                 margin: const EdgeInsets.only(right: 2),
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -440,9 +249,7 @@ class HomeView extends StatelessWidget {
         children: [
           Row(
             children: [
-              CommonUi.setSvgImage(
-                "favorite_icon",
-              ),
+              CommonUi.setSvgImage("favorite_icon"),
               const SizedBox(width: 14),
               CommonUi.setSvgImage("comment"),
               const SizedBox(width: 14),
@@ -450,17 +257,16 @@ class HomeView extends StatelessWidget {
             ],
           ),
           Obx(
-                () =>
-                AnimatedSmoothIndicator(
-                  activeIndex: homeController.postIndex.value,
-                  count: homeController.postUrls.length,
-                  effect: const SlideEffect(
-                    dotHeight: 8,
-                    dotWidth: 8,
-                    activeDotColor: AppColors.skyBlue,
-                    dotColor: AppColors.customGray,
-                  ),
-                ),
+            () => AnimatedSmoothIndicator(
+              activeIndex: homeController.postIndex.value,
+              count: homeController.postUrls.length,
+              effect: const SlideEffect(
+                dotHeight: 8,
+                dotWidth: 8,
+                activeDotColor: AppColors.skyBlue,
+                dotColor: AppColors.customGray,
+              ),
+            ),
           ),
           Row(
             children: [
@@ -470,8 +276,81 @@ class HomeView extends StatelessWidget {
               const SizedBox(width: 14),
               CommonUi.setSvgImage("save"),
             ],
-          )
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPostLikes() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Row(
+        children: [
+          CommonUi.setPngImage("profile_image", height: 18, width: 18),
+          const SizedBox(width: 6),
+          RichText(
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                  text: "Liked by ",
+                  style: TextStyle(
+                      color: AppColors.darkCharcoal,
+                      fontFamily: AppFonts.regular,
+                      fontSize: 13),
+                ),
+                TextSpan(
+                  text: "craig_love, ",
+                  style: TextStyle(
+                      color: AppColors.darkCharcoal,
+                      fontFamily: AppFonts.semiBold,
+                      fontSize: 13),
+                ),
+                TextSpan(
+                  text: "and ",
+                  style: TextStyle(
+                      color: AppColors.darkCharcoal,
+                      fontFamily: AppFonts.regular,
+                      fontSize: 13),
+                ),
+                TextSpan(
+                  text: "44,484 others",
+                  style: TextStyle(
+                      color: AppColors.darkCharcoal,
+                      fontFamily: AppFonts.semiBold,
+                      fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPostDescription() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+      child: RichText(
+        text: const TextSpan(
+          children: [
+            TextSpan(
+              text: "joshua_i ",
+              style: TextStyle(
+                  color: AppColors.darkCharcoal,
+                  fontFamily: AppFonts.semiBold,
+                  fontSize: 13),
+            ),
+            TextSpan(
+              text:
+                  "The game in Japan was amazing and I want to share some photos",
+              style: TextStyle(
+                  color: AppColors.darkCharcoal,
+                  fontFamily: AppFonts.regular,
+                  fontSize: 13),
+            ),
+          ],
+        ),
       ),
     );
   }

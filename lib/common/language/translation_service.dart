@@ -15,6 +15,8 @@ class TranslationService extends Translations {
       LanguageString.or:'OR',
       LanguageString.dontHaveAnAccount:'Don\'t have an account? ',
       LanguageString.signUp:'Sign Up',
+      LanguageString.following:'Following',
+      LanguageString.you:'You',
     },
     'hi_IN': {
       LanguageString.login: 'लॉग इन',

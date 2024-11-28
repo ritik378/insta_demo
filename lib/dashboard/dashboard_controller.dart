@@ -16,9 +16,9 @@ class DashboardController extends GetxController {
 
   List<Widget> navScreens = [
     HomeView(),
-    const SearchView(),
+     SearchView(),
     const AddView(),
-    const FavoriteView(),
+     FavoriteView(),
     const ProfileView(),
   ];
 
@@ -31,13 +31,13 @@ class DashboardController extends GetxController {
       icon: CommonUi.setSvgImage(
         'home_icon',
       ),
-      inactiveIcon: CommonUi.setSvgImage('home_icon', color: Colors.grey),
+      inactiveIcon: CommonUi.setSvgImage('inactive_home_icon', color: Colors.grey),
     ),
     PersistentBottomNavBarItem(
       icon: CommonUi.setSvgImage(
-        'search_icon',
+        'search_active_icon',
       ),
-      inactiveIcon: CommonUi.setSvgImage('search_icon', color: Colors.grey),
+      inactiveIcon: CommonUi.setSvgImage('search_inactive_icon', color: Colors.grey),
     ),
     PersistentBottomNavBarItem(
       icon: CommonUi.setSvgImage(
@@ -47,9 +47,9 @@ class DashboardController extends GetxController {
     ),
     PersistentBottomNavBarItem(
       icon: CommonUi.setSvgImage(
-        'favorite_icon',
+        'active_favorite_icon',
       ),
-      inactiveIcon: CommonUi.setSvgImage('favorite_icon', color: Colors.grey),
+      inactiveIcon: CommonUi.setSvgImage('inactive_favorite_icon', color: Colors.grey),
     ),
     PersistentBottomNavBarItem(
         icon: CommonUi.setPngImage('profile_image', height: 30, width: 30)),

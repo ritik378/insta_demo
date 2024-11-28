@@ -5,6 +5,9 @@ import 'package:insta_demo/dashboard/dashboard_binding.dart';
 import 'package:insta_demo/dashboard/dashboard_view.dart';
 import 'package:insta_demo/dashboard/favorite/favorite_binding.dart';
 import 'package:insta_demo/dashboard/favorite/favorite_view.dart';
+import 'package:insta_demo/dashboard/favorite/following/following_binding.dart';
+import 'package:insta_demo/dashboard/favorite/you/you_binding.dart';
+import 'package:insta_demo/dashboard/favorite/you/you_view.dart';
 import 'package:insta_demo/dashboard/home/home_binding.dart';
 import 'package:insta_demo/dashboard/home/home_view.dart';
 import 'package:insta_demo/dashboard/profile/profile_binding.dart';
@@ -16,6 +19,8 @@ import 'package:insta_demo/login/login_view.dart';
 import 'package:insta_demo/navigation/app_routes.dart';
 import 'package:insta_demo/splash/splash_binding.dart';
 import 'package:insta_demo/splash/splash_view.dart';
+
+import '../dashboard/favorite/following/following_view.dart';
 
 class RoutesManager {
   static final pages = [
@@ -32,7 +37,7 @@ class RoutesManager {
     GetPage(
       name: AppRoutes.dashboard,
       page: () => DashboardView(),
-      bindings: [DashboardBinding(), HomeBinding()],
+      bindings: [DashboardBinding(), HomeBinding(), FavoriteBinding(), SearchBinding()],
     ),
     GetPage(
       name: AppRoutes.home,
@@ -41,7 +46,7 @@ class RoutesManager {
     ),
     GetPage(
       name: AppRoutes.search,
-      page: () => const SearchView(),
+      page: () => SearchView(),
       binding: SearchBinding(),
     ),
     GetPage(
@@ -51,13 +56,23 @@ class RoutesManager {
     ),
     GetPage(
       name: AppRoutes.favorite,
-      page: () => const FavoriteView(),
+      page: () => FavoriteView(),
       binding: FavoriteBinding(),
     ),
     GetPage(
       name: AppRoutes.profile,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.following,
+      page: () => const FollowingView(),
+      binding: FollowingBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.you,
+      page: () => const YouView(),
+      binding: YouBinding(),
     ),
   ];
 }

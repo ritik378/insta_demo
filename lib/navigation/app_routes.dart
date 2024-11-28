@@ -7,4 +7,6 @@ class AppRoutes{
   static const String add = '/add';
   static const String favorite = '/favorite';
   static const String profile = '/profile';
+  static const String following = '/following';
+  static const String you = '/you';
 }
