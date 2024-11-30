@@ -7,11 +7,12 @@ import 'package:insta_demo/common/language/language_string.dart';
 import 'package:insta_demo/dashboard/favorite/favorite_controller.dart';
 import '../../common/app_fonts.dart';
 
+/// A view representing the favorite screen.
 class FavoriteView extends StatelessWidget {
   FavoriteView({super.key});
 
-  /// The controller for managing the favorite view's state.
-  final FavoriteController favoriteController = Get.find();
+  /// Controller for managing favorite-related state.
+  final favoriteController = Get.find<FavoriteController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,16 +35,16 @@ class FavoriteView extends StatelessWidget {
     );
   }
 
-  /// Builds the [TabBar] for the favorite view.
+  /// Builds the tab bar widget.
   TabBar _buildTabBar() {
     return TabBar(
       indicatorSize: TabBarIndicatorSize.tab,
-      indicatorColor: AppColors.darkCharcoal,
+      indicatorColor: AppColors.black,
       indicatorWeight: 1.0,
       labelStyle: const TextStyle(
         fontSize: 16,
         fontFamily: AppFonts.semiBold,
-        color: AppColors.darkCharcoal,
+        color: AppColors.black,
       ),
       unselectedLabelStyle: const TextStyle(
         fontSize: 16,
@@ -51,8 +52,8 @@ class FavoriteView extends StatelessWidget {
         color: AppColors.semiTransparentBlack,
       ),
       tabs: [
-        Tab(text: LanguageString.following.tr),
-        Tab(text: LanguageString.you.tr),
+        Tab(text: LanguageString.followings.tr),
+        Tab(text: LanguageString.smallYou.tr),
       ],
     );
   }

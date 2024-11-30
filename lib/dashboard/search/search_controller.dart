@@ -7,7 +7,7 @@ class SearchViewController extends GetxController {
   // Fetch images from an API or generate dummy data
   Future<List<String>> fetchImage() async {
     final List<String> images = List.generate(
-      50,
+      100000,
           (index) => 'https://picsum.photos/200/300?random=$index',
     );
     return images;

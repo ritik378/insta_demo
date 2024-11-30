@@ -6,14 +6,18 @@ import 'package:insta_demo/common/app_colors.dart';
 import 'package:insta_demo/common/app_fonts.dart';
 import 'package:insta_demo/common/common_ui.dart';
 import 'package:insta_demo/common/custom_app_bar.dart';
+import 'package:insta_demo/common/language/language_string.dart';
 import 'package:insta_demo/dashboard/home/home_controller.dart';
 import 'package:insta_demo/dashboard/home/story_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:video_player/video_player.dart';
 
+/// A view representing the home screen with stories and posts.
 class HomeView extends StatelessWidget {
+  /// Creates a [HomeView] widget.
   HomeView({super.key});
 
+  /// The controller for managing the home state.
   final HomeController homeController = Get.find();
 
   @override
@@ -30,6 +34,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the custom app bar for the home screen.
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
       title: CommonUi.setSvgImage('instagram_text', height: 28, width: 105),
@@ -48,6 +53,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the stories section.
   Widget _buildStories() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,13 +67,13 @@ class HomeView extends StatelessWidget {
               return StoryUser(
                 avatar: s.avatar,
                 label: s.label,
+                margin: const EdgeInsets.symmetric(horizontal: 7),
                 children: s.cards?.map((card) {
                       return StoryCard(
                         visited: card.visited.value,
                         onVisited: (cardIndex) {
                           card.visited.value = true;
-                          print("Story card $cardIndex visited ${ card.visited.value}");
-                         homeController.stories.refresh();
+                          homeController.stories.refresh();
                         },
                         footer: StoryCardFooter(
                           messageBox: StoryCardMessageBox(
@@ -91,7 +97,6 @@ class HomeView extends StatelessWidget {
                           forwardButton:
                               StoryCardForwardButton(onForward: (cardIndex) {}),
                         ),
-
                         cardDuration: card.duration,
                         childOverlay: card.childOverlay,
                         child: card.child,
@@ -103,7 +108,7 @@ class HomeView extends StatelessWidget {
           );
         }),
         const Divider(
-          height: 4,
+          height: 0,
           color: AppColors.semiTransparentBlack,
           thickness: 0.5,
         ),
@@ -111,6 +116,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds a row of reaction emojis.
   Widget _buildReactionRow(List<String> emojis) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -126,6 +132,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the list of posts.
   Widget _buildPostList() {
     return ListView.builder(
       itemCount: 5,
@@ -133,6 +140,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds a single post.
   Widget _buildPost() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,6 +154,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the header of a post.
   Widget _buildPostHeader() {
     return Padding(
       padding: const EdgeInsets.all(11),
@@ -167,8 +176,9 @@ class HomeView extends StatelessWidget {
                 ],
               ),
               CommonUi.commonText(
-                  text: "Tokyo, Japan",
-                  color: AppColors.darkCharcoal,
+                  text:
+                      "${LanguageString.tokyo.tr}, ${LanguageString.japan.tr}",
+                  color: AppColors.black,
                   size: 11.0,
                   fontFamily: AppFonts.regular),
             ],
@@ -183,6 +193,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the carousel of post content.
   Widget _buildPostCarousel() {
     return GetBuilder<HomeController>(
       builder: (logic) {
@@ -241,6 +252,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the actions row for a post.
   Widget _buildPostActions() {
     return Padding(
       padding: const EdgeInsets.all(14.0),
@@ -282,6 +294,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the likes section of a post.
   Widget _buildPostLikes() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -290,33 +303,47 @@ class HomeView extends StatelessWidget {
           CommonUi.setPngImage("profile_image", height: 18, width: 18),
           const SizedBox(width: 6),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               children: [
                 TextSpan(
-                  text: "Liked by ",
-                  style: TextStyle(
-                      color: AppColors.darkCharcoal,
+                  text: "${LanguageString.liked.tr} ",
+                  style: const TextStyle(
+                      color: AppColors.black,
                       fontFamily: AppFonts.regular,
                       fontSize: 13),
                 ),
                 TextSpan(
+                  text: "${LanguageString.by.tr} ",
+                  style: const TextStyle(
+                      color: AppColors.black,
+                      fontFamily: AppFonts.regular,
+                      fontSize: 13),
+                ),
+                const TextSpan(
                   text: "craig_love, ",
                   style: TextStyle(
-                      color: AppColors.darkCharcoal,
+                      color: AppColors.black,
                       fontFamily: AppFonts.semiBold,
                       fontSize: 13),
                 ),
                 TextSpan(
-                  text: "and ",
-                  style: TextStyle(
-                      color: AppColors.darkCharcoal,
+                  text: LanguageString.and.tr,
+                  style: const TextStyle(
+                      color: AppColors.black,
                       fontFamily: AppFonts.regular,
                       fontSize: 13),
                 ),
-                TextSpan(
-                  text: "44,484 others",
+                const TextSpan(
+                  text: " 44,484 ",
                   style: TextStyle(
-                      color: AppColors.darkCharcoal,
+                      color: AppColors.black,
+                      fontFamily: AppFonts.semiBold,
+                      fontSize: 13),
+                ),
+                TextSpan(
+                  text: LanguageString.others.tr,
+                  style: const TextStyle(
+                      color: AppColors.black,
                       fontFamily: AppFonts.semiBold,
                       fontSize: 13),
                 ),
@@ -328,6 +355,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  /// Builds the description section of a post.
   Widget _buildPostDescription() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
@@ -337,7 +365,7 @@ class HomeView extends StatelessWidget {
             TextSpan(
               text: "joshua_i ",
               style: TextStyle(
-                  color: AppColors.darkCharcoal,
+                  color: AppColors.black,
                   fontFamily: AppFonts.semiBold,
                   fontSize: 13),
             ),
@@ -345,7 +373,7 @@ class HomeView extends StatelessWidget {
               text:
                   "The game in Japan was amazing and I want to share some photos",
               style: TextStyle(
-                  color: AppColors.darkCharcoal,
+                  color: AppColors.black,
                   fontFamily: AppFonts.regular,
                   fontSize: 13),
             ),

@@ -13,12 +13,11 @@ import 'package:insta_demo/common/language/language_string.dart';
 import 'package:insta_demo/login/login_controller.dart';
 import '../common/app_fonts.dart';
 
-/// A stateless widget that represents the login view.
+/// A view representing the login screen.
 class LoginView extends StatelessWidget {
-  /// Creates a [LoginView] widget.
   LoginView({super.key});
 
-  /// The controller for managing the login logic.
+  /// Controller for managing login-related state.
   final LoginController loginController = Get.find();
 
   @override
@@ -26,7 +25,6 @@ class LoginView extends StatelessWidget {
     return ColorfulSafeArea(
       color: AppColors.white,
       child: GestureDetector(
-        // Unfocus the text fields when tapping outside.
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           backgroundColor: AppColors.white,
@@ -39,128 +37,31 @@ class LoginView extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 80),
-                    // Display Instagram logo.
                     CommonUi.setSvgImage('instagram_text'),
                     const SizedBox(height: 40),
-                    // Text field for phone, email, or username.
-                    CustomTextFormField(
+                    _buildTextFormField(
                       hintText: LanguageString.phoneEmailUserName.tr,
                       validator: (value) {
-                        return CommonLogics.fieldValidation(value);
+                        return CommonLogics.accountValidation(value);
                       },
-                      hintStyle: const TextStyle(
-                        color: AppColors.customGray,
-                        fontSize: 14,
-                        fontFamily: AppFonts.regular,
-                      ),
                     ),
                     const SizedBox(height: 12),
-                    // Text field for password.
-                    CustomTextFormField(
+                    _buildTextFormField(
                       hintText: LanguageString.password.tr,
                       validator: (value) {
-                        return CommonLogics.fieldValidation(value);
+                        return CommonLogics.passwordValidation(value);
                       },
-                      hintStyle: const TextStyle(
-                        color: AppColors.customGray,
-                        fontSize: 14,
-                        fontFamily: AppFonts.regular,
-                      ),
                     ),
                     const SizedBox(height: 20),
-                    // Forgot password text.
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        CommonUi.commonText(
-                          text: LanguageString.forgotPassword.tr,
-                          size: 12,
-                          color: AppColors.skyBlue,
-                          fontFamily: AppFonts.medium,
-                        ),
-                      ],
-                    ),
+                    _buildForgotPasswordText(),
                     const SizedBox(height: 30),
-                    // Login button.
-                    CustomButton(
-                      buttonName: LanguageString.login.tr,
-                      onPressed: (startLoading, stopLoading, btnState) {
-                        if (loginController.formKey.currentState!.validate()) {
-                          startLoading();
-                          Future.delayed(
-                            const Duration(seconds: 2),
-                            () {
-                              Get.offNamed('/dashboard');
-                              GetStorage().write(AppKeys.isLogged, true);
-                              stopLoading();
-                            },
-                          );
-                        }
-                      },
-                    ),
+                    _buildLoginButton(context),
                     const SizedBox(height: 38),
-                    // Login with Facebook option.
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CommonUi.setSvgImage('fb_logo'),
-                        const SizedBox(width: 10),
-                        CommonUi.commonText(
-                          text: LanguageString.loginWithFb.tr,
-                          color: AppColors.skyBlue,
-                          fontFamily: AppFonts.semiBold,
-                        ),
-                      ],
-                    ),
+                    _buildLoginWithFb(),
                     const SizedBox(height: 40),
-                    // Divider with "or" text.
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Divider(
-                            thickness: 1,
-                            color: AppColors.customGray,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: CommonUi.commonText(
-                            text: LanguageString.or.tr,
-                            size: 12,
-                            color: AppColors.semiTransparentBlack,
-                            fontFamily: AppFonts.semiBold,
-                          ),
-                        ),
-                        const Expanded(
-                          child: Divider(
-                            thickness: 1,
-                            color: AppColors.customGray,
-                          ),
-                        ),
-                      ],
-                    ),
+                    _buildDividerWithText(LanguageString.or.tr),
                     const SizedBox(height: 40),
-                    // Sign up text.
-                    RichText(
-                      text: TextSpan(
-                        text: LanguageString.dontHaveAnAccount.tr,
-                        style: const TextStyle(
-                          color: AppColors.semiTransparentBlack,
-                          fontSize: 14,
-                          fontFamily: AppFonts.regular,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: LanguageString.signUp.tr,
-                            style: const TextStyle(
-                              color: AppColors.skyBlue,
-                              fontSize: 14,
-                              fontFamily: AppFonts.regular,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _buildSignUpText(),
                     const SizedBox(height: 60),
                   ],
                 ),
@@ -168,6 +69,126 @@ class LoginView extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Builds a custom text form field.
+  Widget _buildTextFormField(
+      {required String hintText,
+      required String? Function(String?) validator}) {
+    return CustomTextFormField(
+      hintText: hintText,
+      validator: validator,
+      hintStyle: const TextStyle(
+        color: AppColors.customGray,
+        fontSize: 14,
+        fontFamily: AppFonts.regular,
+      ),
+    );
+  }
+
+  /// Builds the forgot password text.
+  Widget _buildForgotPasswordText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        CommonUi.commonText(
+          text: LanguageString.forgotPassword.tr,
+          size: 12,
+          color: AppColors.skyBlue,
+          fontFamily: AppFonts.medium,
+        ),
+      ],
+    );
+  }
+
+  /// Builds the login button..
+  Widget _buildLoginButton(BuildContext context) {
+    return CustomButton(
+      buttonName: LanguageString.login.tr,
+      onPressed: (startLoading, stopLoading, btnState) {
+        if (loginController.formKey.currentState!.validate()) {
+          FocusScope.of(context).unfocus();
+          startLoading();
+          Future.delayed(
+            const Duration(seconds: 2),
+            () {
+              Get.offNamed('/dashboard');
+              GetStorage().write(AppKeys.isLogged, true);
+              stopLoading();
+            },
+          );
+        }
+      },
+    );
+  }
+
+  /// Builds the login with Facebook section.
+  Widget _buildLoginWithFb() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CommonUi.setSvgImage('fb_logo'),
+        const SizedBox(width: 10),
+        CommonUi.commonText(
+          text: LanguageString.loginWithFb.tr,
+          color: AppColors.skyBlue,
+          fontFamily: AppFonts.semiBold,
+        ),
+      ],
+    );
+  }
+
+  /// Builds a divider with text.
+  Widget _buildDividerWithText(String text) {
+    return Row(
+      children: [
+        const Expanded(
+          child: Divider(
+            thickness: 1,
+            color: AppColors.customGray,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: CommonUi.commonText(
+            text: text,
+            size: 12,
+            color: AppColors.semiTransparentBlack,
+            fontFamily: AppFonts.semiBold,
+          ),
+        ),
+        const Expanded(
+          child: Divider(
+            thickness: 1,
+            color: AppColors.customGray,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Builds the sign-up text.
+  Widget _buildSignUpText() {
+    return RichText(
+      text: TextSpan(
+        text: LanguageString.dontHaveAnAccount.tr,
+        style: const TextStyle(
+          color: AppColors.semiTransparentBlack,
+          fontSize: 14,
+          fontFamily: AppFonts.regular,
+        ),
+        children: [
+          TextSpan(
+            text: LanguageString.signUp.tr,
+            style: const TextStyle(
+              color: AppColors.skyBlue,
+              fontSize: 14,
+              fontFamily: AppFonts.regular,
+            ),
+          ),
+        ],
       ),
     );
   }

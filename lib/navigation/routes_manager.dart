@@ -37,7 +37,13 @@ class RoutesManager {
     GetPage(
       name: AppRoutes.dashboard,
       page: () => DashboardView(),
-      bindings: [DashboardBinding(), HomeBinding(), FavoriteBinding(), SearchBinding()],
+      bindings: [
+        DashboardBinding(),
+        HomeBinding(),
+        FavoriteBinding(),
+        SearchBinding(),
+        ProfileBinding(),
+      ],
     ),
     GetPage(
       name: AppRoutes.home,
@@ -51,8 +57,10 @@ class RoutesManager {
     ),
     GetPage(
       name: AppRoutes.add,
-      page: () => const AddView(),
+      page: () => AddView(),
       binding: AddBinding(),
+      transition: Transition.leftToRight, // Slide in from the left
+      transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
       name: AppRoutes.favorite,
@@ -61,7 +69,7 @@ class RoutesManager {
     ),
     GetPage(
       name: AppRoutes.profile,
-      page: () => const ProfileView(),
+      page: () => ProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(

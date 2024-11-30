@@ -17,7 +17,7 @@ class SplashController extends GetxController {
       () {
         final isLogged = GetStorage().read(AppKeys.isLogged) ?? false;
         Get.offNamed(isLogged ? AppRoutes.dashboard : AppRoutes.login);
-      },
+        },
     );
   }
 }

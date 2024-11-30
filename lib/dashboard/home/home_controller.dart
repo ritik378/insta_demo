@@ -44,7 +44,7 @@ class HomeController extends GetxController {
       avatar: Image.asset("assets/images/profile_image.png"),
       label: Text(userLabel(i + 1), style: const TextStyle(color: Colors.black)),
       cards: [storyCard1(i + 1), storyCard2(i + 1)],
-    ));
+    ),);
   }
 
   /// Creates the first story card model.
