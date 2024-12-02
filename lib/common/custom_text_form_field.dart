@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
       fontSize: 14,
     ),
     this.validator,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -21,7 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final TextStyle? hintStyle;
   final String? Function(String?)? validator;
-
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -29,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
       cursorColor: Colors.black,
       cursorErrorColor: Colors.red,
       validator: validator,
+      onChanged:onChanged ,
       decoration: InputDecoration(
         fillColor: color,
         filled: true,

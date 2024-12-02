@@ -13,11 +13,10 @@ import 'package:insta_demo/common/language/language_string.dart';
 import 'package:insta_demo/login/login_controller.dart';
 import '../common/app_fonts.dart';
 
-/// A view representing the login screen.
 class LoginView extends StatelessWidget {
   LoginView({super.key});
 
-  /// Controller for managing login-related state.
+  /// The controller for managing login-related logic.
   final LoginController loginController = Get.find();
 
   @override
@@ -35,22 +34,19 @@ class LoginView extends StatelessWidget {
               key: loginController.formKey,
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 80),
                     CommonUi.setSvgImage('instagram_text'),
                     const SizedBox(height: 40),
                     _buildTextFormField(
                       hintText: LanguageString.phoneEmailUserName.tr,
-                      validator: (value) {
-                        return CommonLogics.accountValidation(value);
-                      },
+                      validator: CommonLogics.accountValidation,
                     ),
                     const SizedBox(height: 12),
                     _buildTextFormField(
                       hintText: LanguageString.password.tr,
-                      validator: (value) {
-                        return CommonLogics.passwordValidation(value);
-                      },
+                      validator: CommonLogics.passwordValidation,
                     ),
                     const SizedBox(height: 20),
                     _buildForgotPasswordText(),
@@ -58,6 +54,8 @@ class LoginView extends StatelessWidget {
                     _buildLoginButton(context),
                     const SizedBox(height: 38),
                     _buildLoginWithFb(),
+                    const SizedBox(height: 15),
+                    _buildLoginWithGoogle(),
                     const SizedBox(height: 40),
                     _buildDividerWithText(LanguageString.or.tr),
                     const SizedBox(height: 40),
@@ -73,13 +71,20 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  /// Builds a custom text form field.
-  Widget _buildTextFormField(
-      {required String hintText,
-      required String? Function(String?) validator}) {
+  /// Builds a custom text form field with validation.
+  Widget _buildTextFormField({
+    required String hintText,
+    required String? Function(String?) validator,
+  }) {
     return CustomTextFormField(
       hintText: hintText,
       validator: validator,
+      onChanged: (value) {
+        // Validate the form when the input length is 1 or less
+        if (value.length <= 1) {
+          loginController.formKey.currentState!.validate();
+        }
+      },
       hintStyle: const TextStyle(
         color: AppColors.customGray,
         fontSize: 14,
@@ -88,7 +93,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  /// Builds the forgot password text.
+  /// Builds the "Forgot Password" text widget.
   Widget _buildForgotPasswordText() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -103,7 +108,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  /// Builds the login button..
+  /// Builds the login button widget.
   Widget _buildLoginButton(BuildContext context) {
     return CustomButton(
       buttonName: LanguageString.login.tr,
@@ -124,7 +129,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  /// Builds the login with Facebook section.
+  /// Builds the "Login with Facebook" button widget.
   Widget _buildLoginWithFb() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -134,13 +139,40 @@ class LoginView extends StatelessWidget {
         CommonUi.commonText(
           text: LanguageString.loginWithFb.tr,
           color: AppColors.skyBlue,
-          fontFamily: AppFonts.semiBold,
+          fontFamily: AppFonts.medium,
         ),
       ],
     );
   }
 
-  /// Builds a divider with text.
+  /// Builds the "Login with Google" button widget.
+  Widget _buildLoginWithGoogle() {
+    return Obx(
+      () {
+        return loginController.isGoogleSignIn.value
+            ? const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.mistyGray),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CommonUi.setSvgImage('google_icon', height: 20, width: 20),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: loginController.signInWithGoogle,
+                    child: CommonUi.commonText(
+                      text: LanguageString.loginWithGoogle.tr,
+                      color: AppColors.black,
+                      fontFamily: AppFonts.medium,
+                    ),
+                  ),
+                ],
+              );
+      },
+    );
+  }
+
+  /// Builds a divider with text in the middle.
   Widget _buildDividerWithText(String text) {
     return Row(
       children: [
@@ -169,7 +201,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  /// Builds the sign-up text.
+  /// Builds the "Sign Up" text widget.
   Widget _buildSignUpText() {
     return RichText(
       text: TextSpan(

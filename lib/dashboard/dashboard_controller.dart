@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:insta_demo/common/common_ui.dart';
-import 'package:insta_demo/dashboard/add/add_view.dart';
+import 'package:insta_demo/dashboard/add/add_post_view.dart';
 import 'package:insta_demo/dashboard/favorite/favorite_view.dart';
 import 'package:insta_demo/dashboard/home/home_view.dart';
 import 'package:insta_demo/dashboard/profile/profile_view.dart';
@@ -49,8 +49,8 @@ class DashboardController extends GetxController {
       inactiveIcon: CommonUi.setSvgImage('add_icon', color: Colors.grey),
       onPressed: (context) async {
         Get.toNamed(
-
-            AppRoutes.add);
+          AppRoutes.add,
+        );
 
       },
     ),

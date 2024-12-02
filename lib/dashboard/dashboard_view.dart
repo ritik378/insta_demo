@@ -25,11 +25,8 @@ class DashboardView extends StatelessWidget {
           context,
           controller: dashboardController.bottomNavController,
           decoration: const NavBarDecoration(
-            border: Border.symmetric(
-              horizontal: BorderSide(
-                color: AppColors.customGray,
-                width: 1,
-              ),
+            border: Border(
+              top: BorderSide(color: AppColors.mistyGray, width: 1.0),
             ),
           ),
           items: dashboardController.navBarItems,

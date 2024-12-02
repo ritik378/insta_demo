@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:insta_demo/common/app_colors.dart';
+import 'package:insta_demo/common/app_keys.dart';
 import 'package:insta_demo/common/common_ui.dart';
 import 'package:insta_demo/common/custom_app_bar.dart';
 import 'package:insta_demo/common/language/language_string.dart';
 import 'package:insta_demo/dashboard/profile/profile_controller.dart';
+import 'package:insta_demo/navigation/app_routes.dart';
 import '../../common/app_fonts.dart';
 
 /// A view representing the profile screen.
@@ -34,13 +37,8 @@ class ProfileView extends StatelessWidget {
           ],
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 18),
-            child: CommonUi.setSvgImage("menu_icon"),
-          )
-        ],
       ),
+      endDrawer: _buildRightDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -67,8 +65,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds the profile header section.
-  ///
-  /// \return A widget representing the profile header.
   Widget _buildProfileHeader() {
     return Container(
       decoration: const BoxDecoration(
@@ -89,8 +85,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds the profile statistics section.
-  ///
-  /// \return A widget representing the profile statistics.
   Widget _buildProfileStats() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,10 +101,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds a column for a profile statistic.
-  ///
-  /// \param count The count of the statistic.
-  /// \param label The label of the statistic.
-  /// \return A widget representing the statistic column.
   Widget _buildStatColumn(String count, String label) {
     return Column(
       children: [
@@ -123,8 +113,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds the profile information section.
-  ///
-  /// \return A widget representing the profile information.
   Widget _buildProfileInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,8 +149,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds the edit profile button.
-  ///
-  /// \return A widget representing the edit profile button.
   Widget _buildEditProfileButton() {
     return Container(
       height: 30,
@@ -180,8 +166,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds the highlights section.
-  ///
-  /// \return A widget representing the highlights section.
   Widget _buildHighlights() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -195,9 +179,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  /// Builds the tab bar.
-  ///
-  /// \return A widget representing the tab bar.
+  /// Builds the tab bar..
   Widget _buildTabBar() {
     return Container(
       color: AppColors.white,
@@ -229,8 +211,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds the tab bar view.
-  ///
-  /// \return A widget representing the tab bar view.
   Widget _buildTabBarView() {
     return profileController.currentTabIndex.value == 0
         ? _buildGridView(20, "assets/images/liked_post.png")
@@ -238,10 +218,6 @@ class ProfileView extends StatelessWidget {
   }
 
   /// Builds a grid view.
-  ///
-  /// \param itemCount The number of items to display in the grid.
-  /// \param imagePath The path to the image to display in the grid items.
-  /// \return A widget representing the grid view.
   Widget _buildGridView(int itemCount, String imagePath) {
     return GridView.builder(
       shrinkWrap: true,
@@ -262,6 +238,94 @@ class ProfileView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  /// Build the right drawer content.
+  Widget _buildRightDrawer() {
+    return Drawer(
+      backgroundColor: AppColors.white,
+      shape: const RoundedRectangleBorder(),
+      child: Column(
+        children: [
+          ListTile(
+            title: CommonUi.commonText(
+                text: "s.khasanov_", size: 15, fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("archieve_icon"),
+            title: CommonUi.commonText(
+                text: "Archive", size: 15, fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("activity_icon"),
+            title: CommonUi.commonText(
+                text: "Your Activity", size: 15, fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("nametag_icon"),
+            title: CommonUi.commonText(
+                text: "Nametag", size: 15, fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("save"),
+            title: CommonUi.commonText(
+                text: "Saved", size: 15, fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("close_friend"),
+            title: CommonUi.commonText(
+                text: "Close Friends", size: 15, fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("discover_icon"),
+            title: CommonUi.commonText(
+                text: "Discover People",
+                size: 15,
+                fontFamily: AppFonts.regular),
+          ),
+          ListTile(
+            leading: CommonUi.setSvgImage("open_facebook_icon"),
+            title: CommonUi.commonText(
+                text: "Open Facebook", size: 15, fontFamily: AppFonts.regular),
+          ),
+          const Spacer(),
+          ListTile(
+            leading: CommonUi.setSvgImage("settings_icon"),
+            title: CommonUi.commonText(
+                text: "Settings", size: 15, fontFamily: AppFonts.regular),
+          onTap: () {
+            Get.dialog(
+              AlertDialog(
+                title: CommonUi.commonText(
+                    text: "Log Out", size: 20, fontFamily: AppFonts.semiBold),
+                content: CommonUi.commonText(
+                    text: "Are you sure you want to log out?",
+                    size: 15,
+                    fontFamily: AppFonts.regular),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: CommonUi.commonText(
+                        text: "Cancel", size: 15, fontFamily: AppFonts.regular),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.offAllNamed(AppRoutes.login);
+                      GetStorage().write(AppKeys.isLogged, false);
+                    },
+                    child: CommonUi.commonText(
+                        text: "Log Out", size: 15, fontFamily: AppFonts.regular),
+                  ),
+                ],
+              )
+            );
+          },
+          ),
+        ],
+      ),
     );
   }
 }

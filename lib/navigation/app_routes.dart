@@ -9,4 +9,5 @@ class AppRoutes{
   static const String profile = '/profile';
   static const String following = '/following';
   static const String you = '/you';
+  static const String post = '/post';
 }

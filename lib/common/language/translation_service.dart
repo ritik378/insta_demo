@@ -31,6 +31,7 @@ class TranslationService extends Translations {
       LanguageString.japan:'Japan',
       LanguageString.followers:'followers',
       LanguageString.editProfile:'Edit Profile',
+      LanguageString.loginWithGoogle:'Login with Google',
 
 
     },

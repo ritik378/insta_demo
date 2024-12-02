@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
-import 'package:insta_demo/dashboard/add/add_binding.dart';
-import 'package:insta_demo/dashboard/add/add_view.dart';
+import 'package:insta_demo/dashboard/add/add_post_binding.dart';
+import 'package:insta_demo/dashboard/add/add_post_view.dart';
+import 'package:insta_demo/dashboard/add/post/post_binding.dart';
+import 'package:insta_demo/dashboard/add/post/post_view.dart';
 import 'package:insta_demo/dashboard/dashboard_binding.dart';
 import 'package:insta_demo/dashboard/dashboard_view.dart';
 import 'package:insta_demo/dashboard/favorite/favorite_binding.dart';
@@ -57,9 +59,10 @@ class RoutesManager {
     ),
     GetPage(
       name: AppRoutes.add,
-      page: () => AddView(),
-      binding: AddBinding(),
-      transition: Transition.leftToRight, // Slide in from the left
+      page: () => AddPostView(),
+      binding: AddPostBinding(),
+      transition: Transition.leftToRight,
+      // Slide in from the left
       transitionDuration: const Duration(milliseconds: 300),
     ),
     GetPage(
@@ -81,6 +84,11 @@ class RoutesManager {
       name: AppRoutes.you,
       page: () => const YouView(),
       binding: YouBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.post,
+      page: () => PostView(),
+      binding: PostBinding(),
     ),
   ];
 }

@@ -23,4 +23,5 @@ class LanguageString{
   static const String japan = 'japan';
   static const String followers = 'followers';
   static const String editProfile = 'editProfile';
+  static const String loginWithGoogle = 'loginWithGoogle';
 }
