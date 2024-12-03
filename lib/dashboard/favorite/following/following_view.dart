@@ -2,36 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_demo/common/app_colors.dart';
 import 'package:insta_demo/common/app_fonts.dart';
+import 'package:insta_demo/common/common_logics/common_logics_controller.dart';
 import 'package:insta_demo/common/common_ui.dart';
 import 'package:insta_demo/common/language/language_string.dart';
 
 /// A view representing the following screen.
 class FollowingView extends StatelessWidget {
-  const FollowingView({super.key});
+  FollowingView({super.key});
+
+  final CommonLogicsController commonLogicsController =
+      Get.find<CommonLogicsController>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              _buildGridLikedPostsSection(3),
-              _buildMultipleLikedSection(),
-              _buildStartFollowingSection(),
-              _buildGridLikedPostsSection(8),
-              _buildMultipleLikedSection(),
-              _buildMultipleLikedSection(),
-              _buildCommentLikedSection(),
-              _buildGridLikedPostsSection(3),
-            ],
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: commonLogicsController.isDarkMode.value
+            ? AppColors.darkTheme
+            : AppColors.lightTheme,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                _buildGridLikedPostsSection(3),
+                _buildMultipleLikedSection(),
+                _buildStartFollowingSection(),
+                _buildGridLikedPostsSection(8),
+                _buildMultipleLikedSection(),
+                _buildMultipleLikedSection(),
+                _buildCommentLikedSection(),
+                _buildGridLikedPostsSection(3),
+                const SizedBox(height: 18),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   /// Builds a section displaying a grid of liked posts.
@@ -82,24 +91,30 @@ class FollowingView extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: "kiero_d, zackzone ",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
                     TextSpan(
                       text: LanguageString.and.tr,
-                      style: const TextStyle(
-                          color: AppColors.black,
+                      style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " craig_love",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
@@ -111,29 +126,37 @@ class FollowingView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: LanguageString.liked.tr,
-                      style: const TextStyle(
-                          color: AppColors.black,
+                      style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " joshua_l",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " photo.",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " 3h",
                       style: TextStyle(
-                          color: AppColors.semiTransparentBlack,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.semiTransparentBlack,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
@@ -163,24 +186,30 @@ class FollowingView extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: "kiero_d,",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " zackzone ",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
                     TextSpan(
                       text: LanguageString.and.tr,
-                      style: const TextStyle(
-                          color: AppColors.black,
+                      style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
@@ -190,24 +219,30 @@ class FollowingView extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: "craig_love",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " start following ",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
                     TextSpan(
                       text: LanguageString.smallYou.tr,
-                      style: const TextStyle(
-                          color: AppColors.black,
+                      style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
@@ -235,24 +270,30 @@ class FollowingView extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(
+                    TextSpan(
                       text: "kiero_d",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
                     TextSpan(
                       text: ' ${LanguageString.liked.tr} ',
-                      style: const TextStyle(
-                          color: AppColors.black,
+                      style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: "martini_round's",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.semiBold),
                     ),
@@ -264,29 +305,37 @@ class FollowingView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: "${LanguageString.comment.tr}:",
-                      style: const TextStyle(
-                          color: AppColors.black,
+                      style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: " @martini_round ",
                       style: TextStyle(
-                          color: AppColors.primaryBlue,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.blueColor
+                              : AppColors.primaryBlue,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: "Nice! ",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: "3h",
                       style: TextStyle(
-                          color: AppColors.black,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
                           fontSize: 13,
                           fontFamily: AppFonts.regular),
                     ),
@@ -313,15 +362,19 @@ class FollowingView extends StatelessWidget {
             children: [
               TextSpan(
                 text: name,
-                style: const TextStyle(
-                    color: AppColors.black,
+                style: TextStyle(
+                    color: commonLogicsController.isDarkMode.value
+                        ? AppColors.white
+                        : AppColors.black,
                     fontSize: 13,
                     fontFamily: AppFonts.semiBold),
               ),
               TextSpan(
                 text: " $action",
-                style: const TextStyle(
-                    color: AppColors.black,
+                style: TextStyle(
+                    color: commonLogicsController.isDarkMode.value
+                        ? AppColors.white
+                        : AppColors.black,
                     fontSize: 13,
                     fontFamily: AppFonts.regular),
               ),

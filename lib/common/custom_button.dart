@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
       child: CommonUi.commonText(
           text: buttonName,
           size: 14,
-          color: AppColors.white,
+          color: AppColors.lightTheme,
           fontFamily: AppFonts.semiBold),
     );
   }

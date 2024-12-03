@@ -32,6 +32,10 @@ class TranslationService extends Translations {
       LanguageString.followers:'followers',
       LanguageString.editProfile:'Edit Profile',
       LanguageString.loginWithGoogle:'Login with Google',
+      LanguageString.newPost:'New Post',
+      LanguageString.next:'Next',
+      LanguageString.recents:'Recents',
+      LanguageString.selectMultiple:'SELECT MULTIPLE',
 
 
     },

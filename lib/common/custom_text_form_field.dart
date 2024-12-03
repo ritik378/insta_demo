@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:insta_demo/common/app_colors.dart';
 
+/// A custom text form field widget with configurable properties.
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
     this.controller,
-    this.color = AppColors.fieldsColor,
+    this.color = AppColors.snowWhite,
     this.borderColor = AppColors.lightBlackTransparent,
     this.hintText,
     this.hintStyle = const TextStyle(
@@ -14,6 +16,9 @@ class CustomTextFormField extends StatelessWidget {
     ),
     this.validator,
     this.onChanged,
+    this.errorText,
+    this.style,
+    this.cursorColor,
   });
 
   final TextEditingController? controller;
@@ -23,47 +28,43 @@ class CustomTextFormField extends StatelessWidget {
   final TextStyle? hintStyle;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final String? errorText;
+  final TextStyle? style;
+  final Color? cursorColor;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      cursorColor: Colors.black,
+      style: style,
+      cursorColor: cursorColor,
       cursorErrorColor: Colors.red,
       validator: validator,
-      onChanged:onChanged ,
+      onChanged: onChanged,
+      inputFormatters: [
+        FilteringTextInputFormatter.deny(RegExp(r'^\s+')),
+      ],
       decoration: InputDecoration(
         fillColor: color,
         filled: true,
         hintText: hintText,
         hintStyle: hintStyle,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(
-            color: borderColor,
-            width: 0.5,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(
-            color: borderColor,
-            width: 0.5,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 0.5,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide(
-            color: borderColor,
-            width: 0.5,
-          ),
-        ),
+        errorText: errorText,
+        enabledBorder: _buildBorder(borderColor),
+        focusedBorder: _buildBorder(borderColor),
+        errorBorder: _buildBorder(Colors.red),
+        focusedErrorBorder: _buildBorder(borderColor),
+      ),
+    );
+  }
+
+  /// Builds the border for the text field.
+  OutlineInputBorder _buildBorder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5),
+      borderSide: BorderSide(
+        color: color,
+        width: 0.5,
       ),
     );
   }

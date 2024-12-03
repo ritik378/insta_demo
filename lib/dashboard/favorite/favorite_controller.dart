@@ -6,7 +6,7 @@ import 'package:insta_demo/dashboard/favorite/you/you_view.dart';
 class FavoriteController extends GetxController {
   /// List of screens to be displayed in the favorite section.
   var screenList = [
-    const FollowingView(),
-    const YouView(),
+    FollowingView(),
+     YouView(),
   ].obs;
 }

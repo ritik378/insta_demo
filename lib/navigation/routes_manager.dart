@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:insta_demo/common/common_logics/common_logics_binding.dart';
 import 'package:insta_demo/dashboard/add/add_post_binding.dart';
 import 'package:insta_demo/dashboard/add/add_post_view.dart';
 import 'package:insta_demo/dashboard/add/post/post_binding.dart';
@@ -29,7 +30,10 @@ class RoutesManager {
     GetPage(
       name: AppRoutes.splash,
       page: () => SplashView(),
-      binding: SplashBinding(),
+      bindings:[
+        SplashBinding(),
+        CommonLogicsBinding(),
+      ]
     ),
     GetPage(
       name: AppRoutes.login,
@@ -45,6 +49,7 @@ class RoutesManager {
         FavoriteBinding(),
         SearchBinding(),
         ProfileBinding(),
+        CommonLogicsBinding(),
       ],
     ),
     GetPage(
@@ -77,12 +82,12 @@ class RoutesManager {
     ),
     GetPage(
       name: AppRoutes.following,
-      page: () => const FollowingView(),
+      page: () =>  FollowingView(),
       binding: FollowingBinding(),
     ),
     GetPage(
       name: AppRoutes.you,
-      page: () => const YouView(),
+      page: () =>  YouView(),
       binding: YouBinding(),
     ),
     GetPage(

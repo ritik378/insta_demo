@@ -2,6 +2,7 @@ import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_demo/common/app_colors.dart';
+import 'package:insta_demo/common/common_logics/common_logics_controller.dart';
 import 'package:insta_demo/common/custom_app_bar.dart';
 import 'package:insta_demo/common/language/language_string.dart';
 import 'package:insta_demo/dashboard/favorite/favorite_controller.dart';
@@ -13,43 +14,53 @@ class FavoriteView extends StatelessWidget {
 
   /// Controller for managing favorite-related state.
   final favoriteController = Get.find<FavoriteController>();
+  final CommonLogicsController commonLogicsController =
+  Get.find<CommonLogicsController>();
 
   @override
   Widget build(BuildContext context) {
-    return ColorfulSafeArea(
-      color: AppColors.paleWhite,
-      bottom: false,
-      child: DefaultTabController(
+    return Obx(() {
+      return DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: commonLogicsController.isDarkMode.value
+              ? AppColors.darkTheme
+              : AppColors.paleWhite,
           appBar: CustomAppBar(
-            color: AppColors.paleWhite,
+            color: commonLogicsController.isDarkMode.value
+                ? AppColors.darkTheme
+                : AppColors.paleWhite,
             bottom: _buildTabBar(),
           ),
           body: TabBarView(
             children: favoriteController.screenList,
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   /// Builds the tab bar widget.
   TabBar _buildTabBar() {
     return TabBar(
       indicatorSize: TabBarIndicatorSize.tab,
-      indicatorColor: AppColors.black,
+      indicatorColor: commonLogicsController.isDarkMode.value
+          ? AppColors.white
+          : AppColors.black,
       indicatorWeight: 1.0,
-      labelStyle: const TextStyle(
+      labelStyle: TextStyle(
         fontSize: 16,
-        fontFamily: AppFonts.semiBold,
-        color: AppColors.black,
+        fontFamily: AppFonts.medium,
+        color: commonLogicsController.isDarkMode.value
+            ? AppColors.white
+            : AppColors.black,
       ),
-      unselectedLabelStyle: const TextStyle(
+      unselectedLabelStyle: TextStyle(
         fontSize: 16,
-        fontFamily: AppFonts.semiBold,
-        color: AppColors.semiTransparentBlack,
+        fontFamily: AppFonts.medium,
+        color: commonLogicsController.isDarkMode.value
+            ? AppColors.white
+            : AppColors.semiTransparentBlack,
       ),
       tabs: [
         Tab(text: LanguageString.followings.tr),

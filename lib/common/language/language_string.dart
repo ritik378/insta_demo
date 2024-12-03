@@ -24,4 +24,8 @@ class LanguageString{
   static const String followers = 'followers';
   static const String editProfile = 'editProfile';
   static const String loginWithGoogle = 'loginWithGoogle';
+  static const String newPost = 'newPost';
+  static const String next = 'next';
+  static const String recents = 'recents';
+  static const String selectMultiple = 'selectMultiple';
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:insta_demo/common/app_colors.dart';
@@ -11,10 +10,14 @@ import 'package:insta_demo/dashboard/add/add_post_controller.dart';
 import 'package:insta_demo/navigation/app_routes.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../common/language/language_string.dart';
+
+/// A view for adding a new post.
 class AddPostView extends StatelessWidget {
   AddPostView({super.key});
 
-  final AddPostController addPostController = Get.find();
+  /// Controller for managing the state of the add post view.
+  final addPostController = Get.find<AddPostController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +28,19 @@ class AddPostView extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: CommonUi.commonText(
-            text: 'New Post', fontFamily: AppFonts.semiBold, size: 20.0),
+          text: LanguageString.newPost.tr,
+          fontFamily: AppFonts.semiBold,
+          size: 20.0,
+        ),
         actions: [
           GestureDetector(
-            onTap: () {
-              Get.toNamed(AppRoutes.post);
-            },
+            onTap: () => Get.toNamed(AppRoutes.post),
             child: CommonUi.commonText(
-                text: 'Next',
-                fontFamily: AppFonts.semiBold,
-                size: 16.0,
-                color: AppColors.skyBlue),
+              text: LanguageString.next.tr,
+              fontFamily: AppFonts.semiBold,
+              size: 16.0,
+              color: AppColors.skyBlue,
+            ),
           ),
           const SizedBox(width: 10),
         ],
@@ -82,8 +87,8 @@ class AddPostView extends StatelessWidget {
                     mainAxisSpacing: 2,
                   ),
                   itemBuilder: (context, index) {
-                    AssetEntity asset = addPostController.assets[index];
-                    bool isSelected =
+                    final asset = addPostController.assets[index];
+                    final isSelected =
                         addPostController.selectedAssets.contains(asset);
                     return GestureDetector(
                       onTap: () => addPostController.selectImage(asset),
@@ -94,10 +99,8 @@ class AddPostView extends StatelessWidget {
                           if (snapshot.connectionState ==
                                   ConnectionState.done &&
                               snapshot.hasData) {
-                            return Image.memory(
-                              snapshot.data!,
-                              fit: BoxFit.cover,
-                            );
+                            return Image.memory(snapshot.data!,
+                                fit: BoxFit.cover);
                           }
                           return Container(color: Colors.grey[300]);
                         },
@@ -111,17 +114,19 @@ class AddPostView extends StatelessWidget {
     );
   }
 
+  /// Returns a placeholder widget.
   Widget _placeholder() {
     return Container(
       height: 400,
-      color: AppColors.white,
+      color: AppColors.lightTheme,
     );
   }
 
+  /// Builds the header widget.
   Widget _buildHeader() {
     return Container(
       height: 50,
-      color: AppColors.white,
+      color: AppColors.lightTheme,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
@@ -129,7 +134,7 @@ class AddPostView extends StatelessWidget {
             Row(
               children: [
                 CommonUi.commonText(
-                  text: 'Recents',
+                  text: LanguageString.recents.tr,
                   size: 18.0,
                   fontFamily: AppFonts.medium,
                 ),
@@ -147,6 +152,7 @@ class AddPostView extends StatelessWidget {
     );
   }
 
+  /// Builds the select multiple button widget.
   Widget _buildSelectMultipleButton() {
     return Container(
       height: 30,
@@ -158,16 +164,17 @@ class AddPostView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: CommonUi.commonText(
-            text: 'SELECT MULTIPLE',
+            text: LanguageString.selectMultiple.tr,
             size: 14.0,
             fontFamily: AppFonts.medium,
-            color: AppColors.white,
+            color: AppColors.lightTheme,
           ),
         ),
       ),
     );
   }
 
+  /// Builds the camera button widget.
   Widget _buildCameraButton() {
     return Container(
       width: 32,

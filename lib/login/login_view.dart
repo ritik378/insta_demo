@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:insta_demo/common/app_colors.dart';
 import 'package:insta_demo/common/app_keys.dart';
-import 'package:insta_demo/common/common_logics.dart';
+import 'package:insta_demo/common/common_logics/common_logics_controller.dart';
 import 'package:insta_demo/common/common_ui.dart';
 import 'package:insta_demo/common/custom_app_bar.dart';
 import 'package:insta_demo/common/custom_button.dart';
@@ -18,36 +18,100 @@ class LoginView extends StatelessWidget {
 
   /// The controller for managing login-related logic.
   final LoginController loginController = Get.find();
+  final CommonLogicsController commonLogicsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return ColorfulSafeArea(
-      color: AppColors.white,
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          backgroundColor: AppColors.white,
-          appBar: const CustomAppBar(),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Form(
-              key: loginController.formKey,
+    return Obx(() {
+      return ColorfulSafeArea(
+        color: commonLogicsController.isDarkMode.value
+            ? AppColors.darkTheme
+            : AppColors.lightTheme,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            backgroundColor: commonLogicsController.isDarkMode.value
+                ? AppColors.darkTheme
+                : AppColors.lightTheme,
+            appBar: CustomAppBar(
+              color: commonLogicsController.isDarkMode.value
+                  ? AppColors.darkTheme
+                  : AppColors.lightTheme,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 80),
-                    CommonUi.setSvgImage('instagram_text'),
+                    CommonUi.setSvgImage('instagram_text',
+                        color: commonLogicsController.isDarkMode.value
+                            ? AppColors.white
+                            : AppColors.black),
                     const SizedBox(height: 40),
-                    _buildTextFormField(
+
+                    ///Account field
+                    CustomTextFormField(
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.darkGray
+                          : AppColors.snowWhite,
+                      style: TextStyle(
+                        color: commonLogicsController.isDarkMode.value
+                            ? AppColors.white
+                            : AppColors.black,
+                      ),
+                      cursorColor: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
+                      controller: loginController.accountController,
+                      borderColor: commonLogicsController.isDarkMode.value
+                          ? AppColors.darkInputBorderColor
+                          : AppColors.lightInputBorderColor,
                       hintText: LanguageString.phoneEmailUserName.tr,
-                      validator: CommonLogics.accountValidation,
+                      errorText: loginController.acFieldError.value,
+                      onChanged: loginController.validateAcField,
+                      hintStyle: TextStyle(
+                        color: commonLogicsController.isDarkMode.value
+                            ? AppColors.milkyWhite
+                            : AppColors.customGray,
+                        fontSize: 14,
+                        fontFamily: AppFonts.regular,
+                      ),
                     ),
+
                     const SizedBox(height: 12),
-                    _buildTextFormField(
-                      hintText: LanguageString.password.tr,
-                      validator: CommonLogics.passwordValidation,
-                    ),
+
+                    ///Password field
+                    Obx(() {
+                      return CustomTextFormField(
+                        color: commonLogicsController.isDarkMode.value
+                            ? AppColors.darkGray
+                            : AppColors.snowWhite,
+                        style: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.white
+                              : AppColors.black,
+                        ),
+                        cursorColor: commonLogicsController.isDarkMode.value
+                            ? AppColors.white
+                            : AppColors.black,
+                        borderColor: commonLogicsController.isDarkMode.value
+                            ? AppColors.darkInputBorderColor
+                            : AppColors.lightInputBorderColor,
+                        controller: loginController.passwordController,
+                        hintText: LanguageString.password.tr,
+                        errorText: loginController.passwordFieldError.value,
+                        onChanged: loginController.validatePasswordField,
+                        hintStyle: TextStyle(
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.milkyWhite
+                              : AppColors.customGray,
+                          fontSize: 14,
+                          fontFamily: AppFonts.regular,
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 20),
                     _buildForgotPasswordText(),
                     const SizedBox(height: 30),
@@ -67,30 +131,8 @@ class LoginView extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  /// Builds a custom text form field with validation.
-  Widget _buildTextFormField({
-    required String hintText,
-    required String? Function(String?) validator,
-  }) {
-    return CustomTextFormField(
-      hintText: hintText,
-      validator: validator,
-      onChanged: (value) {
-        // Validate the form when the input length is 1 or less
-        if (value.length <= 1) {
-          loginController.formKey.currentState!.validate();
-        }
-      },
-      hintStyle: const TextStyle(
-        color: AppColors.customGray,
-        fontSize: 14,
-        fontFamily: AppFonts.regular,
-      ),
-    );
+      );
+    });
   }
 
   /// Builds the "Forgot Password" text widget.
@@ -113,7 +155,10 @@ class LoginView extends StatelessWidget {
     return CustomButton(
       buttonName: LanguageString.login.tr,
       onPressed: (startLoading, stopLoading, btnState) {
-        if (loginController.formKey.currentState!.validate()) {
+        if (loginController
+                .validateAcField(loginController.accountController.text) &&
+            loginController.validatePasswordField(
+                loginController.passwordController.text)) {
           FocusScope.of(context).unfocus();
           startLoading();
           Future.delayed(
@@ -162,7 +207,9 @@ class LoginView extends StatelessWidget {
                     onTap: loginController.signInWithGoogle,
                     child: CommonUi.commonText(
                       text: LanguageString.loginWithGoogle.tr,
-                      color: AppColors.black,
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.medium,
                     ),
                   ),
@@ -176,10 +223,12 @@ class LoginView extends StatelessWidget {
   Widget _buildDividerWithText(String text) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Divider(
             thickness: 1,
-            color: AppColors.customGray,
+            color: commonLogicsController.isDarkMode.value
+                ? AppColors.milkyWhite
+                : AppColors.customGray,
           ),
         ),
         Padding(
@@ -187,14 +236,18 @@ class LoginView extends StatelessWidget {
           child: CommonUi.commonText(
             text: text,
             size: 12,
-            color: AppColors.semiTransparentBlack,
+            color: commonLogicsController.isDarkMode.value
+                ? AppColors.milkyWhite
+                : AppColors.semiTransparentBlack,
             fontFamily: AppFonts.semiBold,
           ),
         ),
-        const Expanded(
+        Expanded(
           child: Divider(
             thickness: 1,
-            color: AppColors.customGray,
+            color: commonLogicsController.isDarkMode.value
+                ? AppColors.milkyWhite
+                : AppColors.customGray,
           ),
         ),
       ],
@@ -206,8 +259,10 @@ class LoginView extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: LanguageString.dontHaveAnAccount.tr,
-        style: const TextStyle(
-          color: AppColors.semiTransparentBlack,
+        style: TextStyle(
+          color: commonLogicsController.isDarkMode.value
+              ? AppColors.milkyWhite
+              : AppColors.semiTransparentBlack,
           fontSize: 14,
           fontFamily: AppFonts.regular,
         ),

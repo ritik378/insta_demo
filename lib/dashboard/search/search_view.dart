@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:insta_demo/common/app_colors.dart';
 import 'package:insta_demo/common/app_fonts.dart';
+import 'package:insta_demo/common/common_logics/common_logics_controller.dart';
 import 'package:insta_demo/common/common_ui.dart';
 import 'package:insta_demo/dashboard/search/search_controller.dart';
 
@@ -12,19 +13,25 @@ class SearchView extends StatelessWidget {
 
   /// Controller for managing search-related state.
   final searchController = Get.find<SearchViewController>();
+  final CommonLogicsController commonLogicsController =
+      Get.find<CommonLogicsController>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Column(
-        children: [
-          _buildSearchBar(),
-          _buildCategoryList(),
-          _buildImageGrid(),
-        ],
-      ),
-    );
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: commonLogicsController.isDarkMode.value
+            ? AppColors.darkTheme
+            : AppColors.lightTheme,
+        body: Column(
+          children: [
+            _buildSearchBar(),
+            _buildCategoryList(),
+            _buildImageGrid(),
+          ],
+        ),
+      );
+    });
   }
 
   /// Builds the search bar widget.
@@ -36,7 +43,9 @@ class SearchView extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.softGrey,
+                color: commonLogicsController.isDarkMode.value
+                    ? AppColors.black
+                    : AppColors.softGrey,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Padding(
@@ -46,12 +55,16 @@ class SearchView extends StatelessWidget {
                     CommonUi.setSvgImage('search_icon',
                         height: 14,
                         width: 14,
-                        color: AppColors.semiTransparentBlack),
+                        color: commonLogicsController.isDarkMode.value
+                            ? AppColors.coolGray
+                            : AppColors.semiTransparentBlack),
                     const SizedBox(width: 6),
-                    const Text(
+                    Text(
                       'Search',
                       style: TextStyle(
-                          color: AppColors.semiTransparentBlack,
+                          color: commonLogicsController.isDarkMode.value
+                              ? AppColors.coolGray
+                              : AppColors.semiTransparentBlack,
                           fontSize: 16,
                           fontFamily: AppFonts.regular),
                     ),
@@ -61,7 +74,10 @@ class SearchView extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          CommonUi.setSvgImage("live"),
+          CommonUi.setSvgImage("live",
+              color: commonLogicsController.isDarkMode.value
+                  ? AppColors.white
+                  : null),
         ],
       ),
     );
@@ -76,12 +92,50 @@ class SearchView extends StatelessWidget {
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
-            _categoryButton("IGTV", icon: "igtv_category"),
-            _categoryButton("Shop", icon: "shope_icon"),
-            _categoryButton("Style"),
-            _categoryButton("Sports"),
-            _categoryButton("Auto"),
-            _categoryButton("Fashion"),
+            _categoryButton("IGTV",
+                icon: "igtv_category",
+                buttonColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.darkTheme
+                    : AppColors.lightTheme,
+                iconAndTextColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
+            _categoryButton("Shop",
+                icon: "shope_icon",
+                buttonColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.darkTheme
+                    : AppColors.lightTheme,
+                iconAndTextColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
+            _categoryButton("Style",
+                buttonColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.darkTheme
+                    : AppColors.lightTheme,
+                iconAndTextColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
+            _categoryButton("Sports",
+                buttonColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.darkTheme
+                    : AppColors.lightTheme,
+                iconAndTextColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
+            _categoryButton("Auto",
+                buttonColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.darkTheme
+                    : AppColors.lightTheme,
+                iconAndTextColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
+            _categoryButton("Fashion",
+                buttonColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.darkTheme
+                    : AppColors.lightTheme,
+                iconAndTextColor: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
           ],
         ),
       ),
@@ -119,12 +173,13 @@ class SearchView extends StatelessWidget {
   }
 
   /// Builds a category button widget.
-  Widget _categoryButton(String text, {String? icon}) {
+  Widget _categoryButton(String text,
+      {String? icon, Color? buttonColor, Color? iconAndTextColor}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: buttonColor,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(color: AppColors.softGrey),
         ),
@@ -133,12 +188,13 @@ class SearchView extends StatelessWidget {
           child: Row(
             children: [
               if (icon != null)
-                CommonUi.setSvgImage(icon, height: 15, width: 13),
+                CommonUi.setSvgImage(icon,
+                    height: 15, width: 13, color: iconAndTextColor),
               const SizedBox(width: 6),
               Text(
                 text,
-                style: const TextStyle(
-                  color: AppColors.black,
+                style: TextStyle(
+                  color: iconAndTextColor,
                   fontSize: 14,
                   fontFamily: AppFonts.semiBold,
                 ),

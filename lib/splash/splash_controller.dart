@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:insta_demo/common/app_keys.dart';
+import 'package:insta_demo/common/common_logics/common_logics_controller.dart';
 import 'package:insta_demo/navigation/app_routes.dart';
 
 class SplashController extends GetxController {
@@ -17,7 +18,7 @@ class SplashController extends GetxController {
       () {
         final isLogged = GetStorage().read(AppKeys.isLogged) ?? false;
         Get.offNamed(isLogged ? AppRoutes.dashboard : AppRoutes.login);
-        },
+      },
     );
   }
 }

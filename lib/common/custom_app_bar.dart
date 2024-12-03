@@ -8,9 +8,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.centerTitle = false,
     this.actions,
-    this.color = AppColors.white,
+    this.color = AppColors.lightTheme,
     this.bottom,
-    this.shape
+    this.shape,
+    this.iconTheme,
   });
   final Widget? title;
   final Widget? leading;
@@ -19,6 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color color;
   final PreferredSizeWidget? bottom;
   final ShapeBorder? shape;
+  final IconThemeData? iconTheme;
   @override
 
   @override
@@ -26,6 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: title,
       elevation: 0.0,
+      iconTheme: iconTheme,
       backgroundColor: color,
       surfaceTintColor: color,
       centerTitle: centerTitle,

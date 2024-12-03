@@ -4,6 +4,7 @@ import 'package:flutter_story/flutter_story.dart';
 import 'package:get/get.dart';
 import 'package:insta_demo/common/app_colors.dart';
 import 'package:insta_demo/common/app_fonts.dart';
+import 'package:insta_demo/common/common_logics/common_logics_controller.dart';
 import 'package:insta_demo/common/common_ui.dart';
 import 'package:insta_demo/common/custom_app_bar.dart';
 import 'package:insta_demo/common/language/language_string.dart';
@@ -19,35 +20,60 @@ class HomeView extends StatelessWidget {
 
   /// The controller for managing the home state.
   final HomeController homeController = Get.find();
+  final CommonLogicsController commonLogicsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          _buildStories(),
-          Expanded(child: _buildPostList()),
-        ],
-      ),
-    );
+    return Obx(() {
+      return Scaffold(
+        backgroundColor: commonLogicsController.isDarkMode.value
+            ? AppColors.darkTheme
+            : AppColors.lightTheme,
+        appBar: _buildAppBar(),
+        body: Column(
+          children: [
+            _buildStories(),
+            Expanded(child: _buildPostList()),
+          ],
+        ),
+      );
+    });
   }
 
   /// Builds the custom app bar for the home screen.
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
-      title: CommonUi.setSvgImage('instagram_text', height: 28, width: 105),
+      color: commonLogicsController.isDarkMode.value
+          ? AppColors.darkTheme
+          : AppColors.lightTheme,
+      title: CommonUi.setSvgImage('instagram_text',
+          height: 28,
+          width: 105,
+          color: commonLogicsController.isDarkMode.value
+              ? AppColors.white
+              : AppColors.black),
       leading: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: CommonUi.setSvgImage('camera_icon'),
+        child: CommonUi.setSvgImage('camera_icon',
+            color: commonLogicsController.isDarkMode.value
+                ? AppColors.white
+                : AppColors.black),
       ),
       centerTitle: true,
       actions: [
-        CommonUi.setSvgImage('igtv_icon'),
+        commonLogicsController.isDarkMode.value
+            ? CommonUi.setSvgImage(
+                'igtv_icon_black_theme',
+              )
+            : CommonUi.setSvgImage(
+                'igtv_icon',
+              ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: CommonUi.setSvgImage('messanger'),
+          child: CommonUi.setSvgImage('messanger',
+              color: commonLogicsController.isDarkMode.value
+                  ? AppColors.white
+                  : AppColors.black),
         ),
       ],
     );
@@ -170,7 +196,10 @@ class HomeView extends StatelessWidget {
                   CommonUi.commonText(
                       text: "joshua_i",
                       size: 13,
-                      fontFamily: AppFonts.semiBold),
+                      fontFamily: AppFonts.semiBold,
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black),
                   const SizedBox(width: 4),
                   CommonUi.setSvgImage('blue_tick'),
                 ],
@@ -178,7 +207,9 @@ class HomeView extends StatelessWidget {
               CommonUi.commonText(
                   text:
                       "${LanguageString.tokyo.tr}, ${LanguageString.japan.tr}",
-                  color: AppColors.black,
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black,
                   size: 11.0,
                   fontFamily: AppFonts.regular),
             ],
@@ -186,7 +217,10 @@ class HomeView extends StatelessWidget {
           const Spacer(),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: CommonUi.setSvgImage("more_horizontal"),
+            child: CommonUi.setSvgImage("more_horizontal",
+                color: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black),
           ),
         ],
       ),
@@ -261,22 +295,33 @@ class HomeView extends StatelessWidget {
         children: [
           Row(
             children: [
-              CommonUi.setSvgImage("favorite_icon"),
+              CommonUi.setSvgImage("favorite_icon",
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black),
               const SizedBox(width: 14),
-              CommonUi.setSvgImage("comment"),
+              CommonUi.setSvgImage("comment",
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black),
               const SizedBox(width: 14),
-              CommonUi.setSvgImage("messanger"),
+              CommonUi.setSvgImage("messanger",
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black),
             ],
           ),
           Obx(
             () => AnimatedSmoothIndicator(
               activeIndex: homeController.postIndex.value,
               count: homeController.postUrls.length,
-              effect: const SlideEffect(
+              effect: SlideEffect(
                 dotHeight: 8,
                 dotWidth: 8,
                 activeDotColor: AppColors.skyBlue,
-                dotColor: AppColors.customGray,
+                dotColor: commonLogicsController.isDarkMode.value
+                    ? Colors.grey
+                    : AppColors.customGray,
               ),
             ),
           ),
@@ -286,7 +331,10 @@ class HomeView extends StatelessWidget {
               const SizedBox(width: 14),
               CommonUi.setSvgImage("messanger", color: Colors.transparent),
               const SizedBox(width: 14),
-              CommonUi.setSvgImage("save"),
+              CommonUi.setSvgImage("save",
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black),
             ],
           ),
         ],
@@ -307,43 +355,55 @@ class HomeView extends StatelessWidget {
               children: [
                 TextSpan(
                   text: "${LanguageString.liked.tr} ",
-                  style: const TextStyle(
-                      color: AppColors.black,
+                  style: TextStyle(
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.regular,
                       fontSize: 13),
                 ),
                 TextSpan(
                   text: "${LanguageString.by.tr} ",
-                  style: const TextStyle(
-                      color: AppColors.black,
+                  style: TextStyle(
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.regular,
                       fontSize: 13),
                 ),
-                const TextSpan(
+                TextSpan(
                   text: "craig_love, ",
                   style: TextStyle(
-                      color: AppColors.black,
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.semiBold,
                       fontSize: 13),
                 ),
                 TextSpan(
                   text: LanguageString.and.tr,
-                  style: const TextStyle(
-                      color: AppColors.black,
+                  style: TextStyle(
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.regular,
                       fontSize: 13),
                 ),
-                const TextSpan(
+                TextSpan(
                   text: " 44,484 ",
                   style: TextStyle(
-                      color: AppColors.black,
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.semiBold,
                       fontSize: 13),
                 ),
                 TextSpan(
                   text: LanguageString.others.tr,
-                  style: const TextStyle(
-                      color: AppColors.black,
+                  style: TextStyle(
+                      color: commonLogicsController.isDarkMode.value
+                          ? AppColors.white
+                          : AppColors.black,
                       fontFamily: AppFonts.semiBold,
                       fontSize: 13),
                 ),
@@ -360,12 +420,14 @@ class HomeView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       child: RichText(
-        text: const TextSpan(
+        text: TextSpan(
           children: [
             TextSpan(
               text: "joshua_i ",
               style: TextStyle(
-                  color: AppColors.black,
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black,
                   fontFamily: AppFonts.semiBold,
                   fontSize: 13),
             ),
@@ -373,7 +435,9 @@ class HomeView extends StatelessWidget {
               text:
                   "The game in Japan was amazing and I want to share some photos",
               style: TextStyle(
-                  color: AppColors.black,
+                  color: commonLogicsController.isDarkMode.value
+                      ? AppColors.white
+                      : AppColors.black,
                   fontFamily: AppFonts.regular,
                   fontSize: 13),
             ),
