@@ -24,30 +24,32 @@ class CommonUi {
     );
   }
 
-  static commonText({String? text,
-    double size = 14,
-    Color color = AppColors.black,
-    String fontFamily = AppFonts.regular}) {
-      return Text(
-        text ?? '',
-        style: TextStyle(
-          fontSize: size,
-          color: color,
-          fontFamily: fontFamily,
-        ),
-      );
+  static commonText(
+      {String? text,
+      double size = 14,
+      Color color = AppColors.black,
+      String fontFamily = AppFonts.regular}) {
+    return Text(
+      text ?? '',
+      style: TextStyle(
+        fontSize: size,
+        color: color,
+        fontFamily: fontFamily,
+      ),
+    );
   }
 
-  static customBorderCircleImage({double? height,
-    double? width,
-    String? title,
-    Color backgroundColor = AppColors.lightTheme,
-    Color borderColor = AppColors.mistyGray,
-    double borderWidth = 2,
-    BorderRadiusGeometry borderRadius = BorderRadius.zero,
-    double? childPadding,
-    Color titleColor = AppColors. black,
-    Widget? child}) {
+  static customBorderCircleImage(
+      {double? height,
+      double? width,
+      String? title,
+      Color backgroundColor = AppColors.lightTheme,
+      Color borderColor = AppColors.mistyGray,
+      double borderWidth = 2,
+      BorderRadiusGeometry borderRadius = BorderRadius.zero,
+      double? childPadding,
+      Color titleColor = AppColors.black,
+      Widget? child}) {
     return Column(
       children: [
         Container(
@@ -71,13 +73,13 @@ class CommonUi {
         ),
         title != null
             ? Padding(
-          padding: const EdgeInsets.only(top: 3),
-          child: CommonUi.commonText(
-              text: title,
-              size: 12,
-              color: titleColor,
-              fontFamily: AppFonts.regular),
-        )
+                padding: const EdgeInsets.only(top: 3),
+                child: CommonUi.commonText(
+                    text: title,
+                    size: 12,
+                    color: titleColor,
+                    fontFamily: AppFonts.regular),
+              )
             : Container(),
       ],
     );

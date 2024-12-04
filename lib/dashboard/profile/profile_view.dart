@@ -277,7 +277,9 @@ class ProfileView extends StatelessWidget {
                     ? commonLogicsController.isDarkMode.value
                         ? AppColors.white
                         : AppColors.black
-                    :commonLogicsController.isDarkMode.value?AppColors.milkyWhite: AppColors.customGray),
+                    : commonLogicsController.isDarkMode.value
+                        ? AppColors.milkyWhite
+                        : AppColors.customGray),
           ),
           Tab(
             child: CommonUi.setSvgImage("tags_icon",
@@ -285,7 +287,9 @@ class ProfileView extends StatelessWidget {
                     ? commonLogicsController.isDarkMode.value
                         ? AppColors.white
                         : AppColors.black
-                    : commonLogicsController.isDarkMode.value?AppColors.milkyWhite: AppColors.customGray),
+                    : commonLogicsController.isDarkMode.value
+                        ? AppColors.milkyWhite
+                        : AppColors.customGray),
           ),
         ],
       ),
@@ -434,6 +438,14 @@ class ProfileView extends StatelessWidget {
                       : AppColors.black),
             ),
             ListTile(
+              leading: Icon(
+                commonLogicsController.isDarkMode.value
+                    ? Icons.dark_mode
+                    : Icons.light_mode,
+                color: commonLogicsController.isDarkMode.value
+                    ? AppColors.white
+                    : AppColors.black,
+              ),
               title: CommonUi.commonText(
                   text: "Change Theme",
                   size: 15,

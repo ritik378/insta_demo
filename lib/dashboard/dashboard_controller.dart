@@ -38,6 +38,4 @@ class DashboardController extends GetxController {
   void onItemSelected(int index) {
     currentIndex.value = index;
   }
-
-
 }

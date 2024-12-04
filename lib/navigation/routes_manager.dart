@@ -50,6 +50,7 @@ class RoutesManager {
         SearchBinding(),
         ProfileBinding(),
         CommonLogicsBinding(),
+        YouBinding(),
       ],
     ),
     GetPage(

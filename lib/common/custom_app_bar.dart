@@ -13,6 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.shape,
     this.iconTheme,
   });
+
   final Widget? title;
   final Widget? leading;
   final bool centerTitle;
@@ -21,8 +22,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final ShapeBorder? shape;
   final IconThemeData? iconTheme;
-  @override
 
+  @override
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -35,11 +36,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading,
       bottom: bottom,
       actions: actions,
-      shape:shape,
+      shape: shape,
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(56);
-
 }

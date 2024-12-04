@@ -20,8 +20,11 @@ class LoginView extends StatelessWidget {
   final LoginController loginController = Get.find();
   final CommonLogicsController commonLogicsController = Get.find();
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Obx(() {
       return ColorfulSafeArea(
         color: commonLogicsController.isDarkMode.value

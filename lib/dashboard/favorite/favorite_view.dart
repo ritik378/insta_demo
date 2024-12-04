@@ -25,11 +25,11 @@ class FavoriteView extends StatelessWidget {
         child: Scaffold(
           backgroundColor: commonLogicsController.isDarkMode.value
               ? AppColors.darkTheme
-              : AppColors.paleWhite,
+              : AppColors.lightTheme,
           appBar: CustomAppBar(
             color: commonLogicsController.isDarkMode.value
                 ? AppColors.darkTheme
-                : AppColors.paleWhite,
+                : AppColors.lightTheme,
             bottom: _buildTabBar(),
           ),
           body: TabBarView(
